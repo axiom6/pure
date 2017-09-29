@@ -1,0 +1,36 @@
+{
+  "name": "Pure",
+  "description": "Purescript Incubator",
+  "version": "0.0.0",
+  "author": "Tom Flaherty <Thomas.Edmund.Flaherty@gmail.com>",
+  "homepage": "https://axiom6.github.io",
+  "license": "MIT",
+  "registry": "github",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axiom6/pure.git"
+  },
+  "bugs": {
+    "url": "https://github.com/axiom6/pure/issues"
+  },
+  "keywords": [
+    "purescript"
+  ],
+  "main": "",
+  "files": [],
+  "scripts": {
+    "docs": "babel-node build/server/index-docs.js --presets es2015,stage-0",
+    "muse": "babel-node build/server/index-muse.js --presets es2015,stage-0",
+    "build:muse": "babel-node build/server/build-muse.js --presets es2015,stage-0",
+    "build:docs": "babel-node build/server/build-docs.js --presets es2015,stage-0",
+    "build:lib": "babel-node build/server/build-lib.js  --presets es2015,stage-0",
+    "build": "rm -rf dist && npm run build:docs && npm run build:lib",
+    "lint": "eslint --ext .js,.vue --fix src docs",
+    "release": "bash build/release.sh"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "purescript": "^0.11.6",
+    "purs-loader": "^3.1.1"
+  }
+}
