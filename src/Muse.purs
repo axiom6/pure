@@ -1,9 +1,11 @@
 module Muse( Info ) where
 
---| import Prelude
---| import Data.String
+ --| import Prelude
+ --| import Data.Show --| (class Show, show)
 
-type Embrace   = String
+import Prelude (class Show, show, (<>))
+
+type Embrace   = String --| { name::String }
 type Innovate  = String
 type Encourage = String
 
@@ -13,6 +15,14 @@ type Share     = String
 
 data Col   = Embrace | Innovate  | Encourage
 data Row   = Learn   | Do        | Share
+
+instance showCol :: Show Col where
+--|show Col col = "( Col " <> show col  <> ")"
+   show _       = "( Col " <>     "col" <> ")"
+
+instance showRow :: Show Row where
+--|show Row row = "( Row " <> show row  <> ")"
+   show _       = "( Row " <>     "row" <> ")"
 
 data Info
   = Collaborate Embrace Learn | Product    Innovate Learn | Discover   Encourage Learn
@@ -34,27 +44,29 @@ data Wise
   | Aware       Embrace Do    | Conscience Innovate Do    | Complex    Encourage Do
   | Emerge      Embrace Share | Inspire    Innovate Share | Actualize  Encourage Share
 
-
 data Plane = Info | Know | Augm | Wise
 
-info::  Info
+info:: Info
+info = Collaborate col row
+  where
+--| col :: Col
+    col  = "Embrace"
+--| row :: Row
+    row  = "Learn"
 
 json :: Info -> String
-json (Collaborate c r ) = "Collaborate"
-json (Product     c r ) = "Product"
-json (Discover    c r ) = "Discover"
-json (Adapt       c r ) = "Adapt"
-json (Technology  c r ) = "Technology"
-json (Benefit     c r ) = "Benefit"
-json (Change      c r ) = "Change"
-json (Deliver     c r ) = "Deliver"
-json (Govern      c r ) = "Govern"
-
-
+json (Collaborate c r ) = "( Collaborate" <> show c <> " " <> show r <> " )"
+json (Product     c r ) = "( Product"
+json (Discover    c r ) = "( Discover"
+json (Adapt       c r ) = "( Adapt"
+json (Technology  c r ) = "( Technology"
+json (Benefit     c r ) = "( Benefit"
+json (Change      c r ) = "( Change"
+json (Deliver     c r ) = "( Deliver"
+json (Govern      c r ) = "( Govern"
 
 class PracticeC row col
 class PracticeC row col <= Collab col row
-
 type  PracticeT = { col::Col, row::Row }
 
 
