@@ -1,26 +1,22 @@
-module Muse where
+module Muse( Info ) where
 
-import Prelude
-import Data.Generic.Rep.Generic
+--| import Prelude
+--| import Data.String
 
-class Info
-class Know
-class Wise
+type Embrace   = String
+type Innovate  = String
+type Encourage = String
 
-class Embrace
-class Innovate
-class Encourage
-
-class Learn
-class Do
-class Share
+type Learn     = String
+type Do        = String
+type Share     = String
 
 data Col   = Embrace | Innovate  | Encourage
 data Row   = Learn   | Do        | Share
 
 data Info
   = Collaborate Embrace Learn | Product    Innovate Learn | Discover   Encourage Learn
-  | Adapt       Embrace Do    | Techology  Innovate Do    | Benefit    Encourage Do
+  | Adapt       Embrace Do    | Technology Innovate Do    | Benefit    Encourage Do
   | Change      Embrace Share | Deliver    Innovate Share | Govern     Encourage Share
 
 data Augm
@@ -38,14 +34,28 @@ data Wise
   | Aware       Embrace Do    | Conscience Innovate Do    | Complex    Encourage Do
   | Emerge      Embrace Share | Inspire    Innovate Share | Actualize  Encourage Share
 
+
 data Plane = Info | Know | Augm | Wise
 
-data Practice = Practice { plane::Plane, col::Col, row::Row }
+info::  Info
 
-instance showPractice :: Show Practice where
-  show = generic Show
+json :: Info -> String
+json (Collaborate c r ) = "Collaborate"
+json (Product     c r ) = "Product"
+json (Discover    c r ) = "Discover"
+json (Adapt       c r ) = "Adapt"
+json (Technology  c r ) = "Technology"
+json (Benefit     c r ) = "Benefit"
+json (Change      c r ) = "Change"
+json (Deliver     c r ) = "Deliver"
+json (Govern      c r ) = "Govern"
 
--- | This is stupid
--- | 00showPractice :: Practice -> String
--- | showPractice p = show p.plane <> show p.col <> show p.row
+
+
+class PracticeC row col
+class PracticeC row col <= Collab col row
+
+type  PracticeT = { col::Col, row::Row }
+
+
 
