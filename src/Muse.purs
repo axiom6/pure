@@ -1,28 +1,33 @@
-module Muse( Info ) where
+module Muse( foldPracs ) where
 
- --| import Prelude
- --| import Data.Show --| (class Show, show)
+import Prelude (class Show, show, (<>), bind, pure )
+import Data.Foldable
 
-import Prelude (class Show, show, (<>))
+data Embrace   = Embrace   { name::String }
+data Innovate  = Innovate  { name::String }
+data Encourage = Encourage { name::String }
 
-type Embrace   = String --| { name::String }
-type Innovate  = String
-type Encourage = String
+data Learn     = Learn     { name::String }
+data Do        = Do        { name::String }
+data Share     = Share     { name::String }
 
-type Learn     = String
-type Do        = String
-type Share     = String
+instance showEmbrace :: Show Embrace where
+  show ( Embrace { name:name } ) = "( Embrace "   <> show name <> " )"
 
-data Col   = Embrace | Innovate  | Encourage
-data Row   = Learn   | Do        | Share
+instance showInnovate :: Show Innovate where
+  show ( Innovate { name:name } ) = "( Innovate "   <> show name <> " )"
 
-instance showCol :: Show Col where
---|show Col col = "( Col " <> show col  <> ")"
-   show _       = "( Col " <>     "col" <> ")"
+instance showEncourage :: Show Encourage where
+  show ( Encourage { name:name } ) = "( Encourage " <> show name <> " )"
 
-instance showRow :: Show Row where
---|show Row row = "( Row " <> show row  <> ")"
-   show _       = "( Row " <>     "row" <> ")"
+instance showLearn  :: Show Learn where
+   show ( Learn { name:name } ) = "( Learn "    <> show name <> " )"
+
+instance showDo :: Show Do where
+  show ( Do { name:name } ) = "( Do "   <> show name <> " )"
+
+instance showShare :: Show Share where
+  show ( Share { name:name } ) = "( Share " <> show name <> " )"
 
 data Info
   = Collaborate Embrace Learn | Product    Innovate Learn | Discover   Encourage Learn
@@ -46,28 +51,90 @@ data Wise
 
 data Plane = Info | Know | Augm | Wise
 
-info:: Info
-info = Collaborate col row
-  where
---| col :: Col
-    col  = "Embrace"
---| row :: Row
-    row  = "Learn"
-
 json :: Info -> String
-json (Collaborate c r ) = "( Collaborate" <> show c <> " " <> show r <> " )"
-json (Product     c r ) = "( Product"
-json (Discover    c r ) = "( Discover"
-json (Adapt       c r ) = "( Adapt"
-json (Technology  c r ) = "( Technology"
-json (Benefit     c r ) = "( Benefit"
-json (Change      c r ) = "( Change"
-json (Deliver     c r ) = "( Deliver"
-json (Govern      c r ) = "( Govern"
+json (Collaborate col row ) = "( Collaborate " <> show col <> show row <> " )"
+json (Product     col row ) = "( Product "     <> show col <> show row <> " )"
+json (Discover    col row ) = "( Discover "    <> show col <> show row <> " )"
+json (Adapt       col row ) = "( Adapt "       <> show col <> show row <> " )"
+json (Technology  col row ) = "( Technology "  <> show col <> show row <> " )"
+json (Benefit     col row ) = "( Benefit "     <> show col <> show row <> " )"
+json (Change      col row ) = "( Change "      <> show col <> show row <> " )"
+json (Deliver     col row ) = "( Deliver "     <> show col <> show row <> " )"
+json (Govern      col row ) = "( Govern "      <> show col <> show row <> " )"
 
-class PracticeC row col
-class PracticeC row col <= Collab col row
-type  PracticeT = { col::Col, row::Row }
+e11 :: Info
+e11  = Collaborate col row where
+  col  = Embrace { name:"Embrace" }
+  row  = Learn   { name:"Learn"   }
+
+e21 :: Info
+e21  = Product col row where
+  col  = Innovate { name:"Innovate" }
+  row  = Learn    { name:"Learn"   }
+
+e31 :: Info
+e31  = Discover col row where
+  col  = Encourage { name:"Encourage" }
+  row  = Learn     { name:"Learn"   }
+
+e12 :: Info
+e12  = Adapt col row where
+  col  = Embrace { name:"Embrace" }
+  row  = Do      { name:"Do"      }
+
+e22 :: Info
+e22  = Technology col row where
+  col  = Innovate { name:"Innovate" }
+  row  = Do       { name:"Do"       }
+
+e32 :: Info
+e32  = Benefit col row where
+  col  = Encourage { name:"Encourage" }
+  row  = Do        { name:"Do"        }
+
+e13 :: Info
+e13  = Change col row where
+  col  = Embrace { name:"Embrace" }
+  row  = Share   { name:"Share"   }
+
+e23 :: Info
+e23  = Deliver col row where
+  col  = Innovate { name:"Innovate" }
+  row  = Share    { name:"Share"    }
+
+e33 :: Info
+e33  = Govern col row where
+  col  = Encourage { name:"Encourage" }
+  row  = Share     { name:"Share"     }
+
+pracs :: Array Info
+pracs = [e11,e21,e31,e12,e22,e32,e13,e23,e33]
+
+jsonPracs :: Array Info -> Array String
+jsonPracs ps = do
+    prac <- ps
+    let  prs = json prac
+    pure prs
+
+doPracs :: Array String
+doPracs = jsonPracs pracs
+
+foldPracs :: String
+foldPracs = foldl (<>) "" doPracs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
